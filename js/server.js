@@ -22,6 +22,12 @@ xhr.send();
 //endregion
 
 //region FUNCTIONS
+function uuidv4() {
+  return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+    (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+  );
+}
+
 function joinGame() {
   const xhr = new XMLHttpRequest();
 
@@ -36,7 +42,7 @@ function joinGame() {
     }
   };
 
-  xhr.open('GET', apiUrl + "/joingame", true);
+  xhr.open('GET', apiUrl + `/joingame?name=${localStorage.getItem('clientId')}`, true);
   xhr.send();
 }
 
@@ -58,6 +64,13 @@ function getGames() {
 }
 //endregion
 
+//region START
+if (!localStorage.getItem('clientId')) {
+  localStorage.setItem('clientId', uuidv4());
+}
+document.querySelector("#uuid").innerText = localStorage.getItem('clientId');
+
 joinGame();
 
 getGames();
+//endregion
