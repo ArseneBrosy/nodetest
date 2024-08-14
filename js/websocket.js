@@ -19,7 +19,10 @@ function joinGame() {
   }));
 }
 
-function reloadGameState() {
+function reloadGameState(gameState) {
+  // update joined game
+  joinedGame = gameState;
+
   // ID
   document.querySelector("#game_id").innerText = joinedGame.id;
 
@@ -35,6 +38,10 @@ function reloadGameState() {
   if (joinedGame.players.length < 2) {
     document.querySelector("#opponent").innerText = "NOBODY";
   }
+}
+
+function me() {
+  return joinedGame.players.filter(e => e.uuid === localStorage.getItem('clientId'))[0];
 }
 //endregion
 
@@ -61,9 +68,9 @@ socket.onmessage = function(event) {
     const request = JSONMessage.request;
 
     // joinConfirmation
-    if (request === 'joinConfirmation') {
-      joinedGame = JSONMessage.game;
-      reloadGameState();
+    switch (request) {
+      case 'joinConfirmation' : joinedGame = JSONMessage.game; break;
+      case 'reloadGame': reloadGameState(JSONMessage.gameState); break;
     }
   }
 };
@@ -90,6 +97,7 @@ document.querySelector("#ready_button").addEventListener('click', (e) => {
   socket.send(JSON.stringify({
     request: 'setReady',
     uuid: localStorage.getItem('clientId'),
-    gameId: joinedGame.id
+    gameId: joinedGame.id,
+    ready: !me().ready
   }));
 });
