@@ -1,6 +1,10 @@
 // Connect to the WebSocket server
 const socket = new WebSocket('ws://172.233.246.192:8080');
 
+//region GLOBAL VARIABLES
+let joinedGame = null;
+//endregion
+
 //region FUNCTIONS
 function uuidv4() {
   return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
@@ -11,8 +15,26 @@ function uuidv4() {
 function joinGame() {
   socket.send(JSON.stringify({
     request: 'joinGame',
-    name: localStorage.getItem('clientId')
+    uuid: localStorage.getItem('clientId')
   }));
+}
+
+function reloadGameState() {
+  // ID
+  document.querySelector("#game_id").innerText = joinedGame.id;
+
+  // READY
+  for (let player of joinedGame.players) {
+    if (player.uuid === localStorage.getItem('clientId')) {
+      document.querySelector("#me").innerText = player.ready ? "READY" : "NOT READY";
+    } else {
+      document.querySelector("#opponent").innerText = player.ready ? "READY" : "NOT READY";
+    }
+  }
+
+  if (joinedGame.players.length < 2) {
+    document.querySelector("#opponent").innerText = "NOBODY";
+  }
 }
 //endregion
 
@@ -25,7 +47,25 @@ socket.onopen = function() {
 
 // Event listener for incoming messages
 socket.onmessage = function(event) {
-  console.log('Message from server:', event.data);
+  // try to parse the message as JSON
+  let JSONMessage = null;
+  try {
+    JSONMessage = JSON.parse(event.data);
+    console.log('received:', JSONMessage);
+  } catch (e) {
+    console.log(`recivied non JSON: "${event.data}"`);
+  }
+
+  // actions
+  if (JSONMessage !== null) {
+    const request = JSONMessage.request;
+
+    // joinConfirmation
+    if (request === 'joinConfirmation') {
+      joinedGame = JSONMessage.game;
+      reloadGameState();
+    }
+  }
 };
 
 // Event listener for when the connection is closed
