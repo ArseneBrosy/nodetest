@@ -85,3 +85,11 @@ if (!localStorage.getItem('clientId')) {
 }
 document.querySelector("#uuid").innerText = localStorage.getItem('clientId');
 //endregion
+
+document.querySelector("#ready_button").addEventListener('click', (e) => {
+  socket.send(JSON.stringify({
+    request: 'setReady',
+    uuid: localStorage.getItem('clientId'),
+    gameId: joinedGame.id
+  }));
+});
