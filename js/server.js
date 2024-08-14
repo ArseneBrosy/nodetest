@@ -5,7 +5,7 @@ let gameId = null;
 //endregion
 
 //region TEST CONNECTION
-const xhr = new XMLHttpRequest();
+/*const xhr = new XMLHttpRequest();
 
 xhr.onreadystatechange = function () {
   if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -18,7 +18,7 @@ xhr.onreadystatechange = function () {
 };
 
 xhr.open('GET', apiUrl + "/testconnection", true);
-xhr.send();
+xhr.send();*/
 //endregion
 
 //region FUNCTIONS
@@ -35,7 +35,7 @@ function joinGame() {
     if (xhr.readyState === XMLHttpRequest.DONE) {
       if (xhr.status === 200) {
         gameId = parseInt(xhr.responseText);
-        console.log(`joined game ${gameId}`);
+        document.querySelector("#game_id").innerText = gameId;
       } else {
         console.error(`HTTP request failed with status ${xhr.status}`);
       }
@@ -44,6 +44,10 @@ function joinGame() {
 
   xhr.open('GET', apiUrl + `/joingame?name=${localStorage.getItem('clientId')}`, true);
   xhr.send();
+}
+
+function setReady() {
+
 }
 
 function getGames() {
