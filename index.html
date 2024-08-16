@@ -7,9 +7,18 @@
 <body>
     <p><strong>UUID</strong>&emsp;<span id="uuid"></span></p>
     <p><strong>GAME ID</strong>&emsp;<span id="game_id"></span></p>
-    <p><strong>ME</strong>&emsp;<span id="me"></span></p>
-    <p><strong>OPPONENT</strong>&emsp;<span id="opponent"></span></p>
-    <button id="ready_button">READY</button>
+    <p><strong>GAME STATUS</strong>&emsp;<span id="game_status"></span></p>
+    <div id="searching">
+        <h1>Searching</h1>
+    </div>
+    <div id="found_opponent" style="display: none">
+        <h1>Found opponent</h1>
+        <p id="found_opponent_name"></p>
+        <p id="found_opponent_countdown">3</p>
+    </div>
+    <div id="playing" style="display: none">
+        <h1>Playing</h1>
+    </div>
 
     <script src="js/websocket.js"></script>
 </body>
