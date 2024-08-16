@@ -44,6 +44,13 @@ function reloadGameState(gameState) {
   // ID
   document.querySelector("#game_id").innerText = joinedGame.id;
   document.querySelector("#game_status").innerText = joinedGame.status;
+
+  // TIMER
+  document.querySelector("#playing_timer").innerText = secondsToText(joinedGame.timer);
+
+  // PLAYED
+  document.querySelector("#playing_me_played").innerText = me().played ? "PLAYED" : "CHOOSING";
+  document.querySelector("#playing_opponent_played").innerText = opponent().played ? "PLAYED" : "CHOOSING";
 }
 
 function me() {
@@ -68,6 +75,10 @@ function startGame() {
       clearInterval(foundOpponentInterval);
     }
   }, 1000);
+}
+
+function secondsToText(seconds) {
+  return `${parseInt(seconds / 60)}:${(seconds % 60 < 10 ? "0" : "") + seconds % 60}`;
 }
 //endregion
 
@@ -98,6 +109,10 @@ socket.onmessage = function(event) {
       case 'joinConfirmation' : joinedGame = JSONMessage.game; break;
       case 'reloadGame': reloadGameState(JSONMessage.gameState); break;
       case 'startGame' : startGame(); break;
+      case 'updateTimer' :
+        joinedGame.timer = JSONMessage.timer;
+        document.querySelector("#playing_timer").innerText = secondsToText(joinedGame.timer);
+        break;
     }
   }
 };
@@ -119,3 +134,12 @@ if (!localStorage.getItem('clientId')) {
 }
 document.querySelector("#uuid").innerText = localStorage.getItem('clientId');
 //endregion
+
+document.querySelector("#playing_ready_button").addEventListener('click', (e) => {
+  socket.send(JSON.stringify({
+    request: 'setPlayed',
+    uuid: localStorage.getItem('clientId'),
+    gameId: joinedGame.id,
+    played: !me().played
+  }));
+});
