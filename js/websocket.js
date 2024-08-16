@@ -145,6 +145,7 @@ document.querySelector("#playing_ready_button").addEventListener('click', (e) =>
     request: 'setPlayed',
     uuid: localStorage.getItem('clientId'),
     gameId: joinedGame.id,
+    cardId: 0,
     played: !me().played
   }));
 });
