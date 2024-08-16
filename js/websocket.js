@@ -45,6 +45,28 @@ function reloadGameState(gameState) {
   document.querySelector("#game_id").innerText = joinedGame.id;
   document.querySelector("#game_status").innerText = joinedGame.status;
 
+  // STATUS
+  switch (joinedGame.status) {
+    case 0:
+      document.querySelector("#searching").style.display = "block";
+      document.querySelector("#found_opponent").style.display = "none";
+      document.querySelector("#playing").style.display = "none";
+      break;
+    case 1:
+      document.querySelector("#searching").style.display = "none";
+      document.querySelector("#found_opponent").style.display = "block";
+      document.querySelector("#playing").style.display = "none";
+      break;
+    case 2:
+      document.querySelector("#searching").style.display = "none";
+      document.querySelector("#found_opponent").style.display = "none";
+      document.querySelector("#playing").style.display = "block";
+      break;
+  }
+
+  // OPPONENT
+  document.querySelector("#found_opponent_name").innerText = opponent().uuid;
+
   // TIMER
   document.querySelector("#playing_timer").innerText = secondsToText(joinedGame.timer);
 
@@ -59,22 +81,6 @@ function me() {
 
 function opponent() {
   return joinedGame.players.filter(e => e.uuid !== localStorage.getItem('clientId'))[0];
-}
-
-function startGame() {
-  document.querySelector("#searching").style.display = "none";
-  document.querySelector("#found_opponent").style.display = "block";
-  document.querySelector("#found_opponent_name").innerText = opponent().uuid;
-
-  const foundOpponentInterval = setInterval(() => {
-    foundOpponentCountdown--;
-    document.querySelector("#found_opponent_countdown").innerText = foundOpponentCountdown;
-    if (foundOpponentCountdown <= 0) {
-      document.querySelector("#found_opponent").style.display = "none";
-      document.querySelector("#playing").style.display = "block";
-      clearInterval(foundOpponentInterval);
-    }
-  }, 1000);
 }
 
 function secondsToText(seconds) {
@@ -108,7 +114,6 @@ socket.onmessage = function(event) {
     switch (request) {
       case 'joinConfirmation' : joinedGame = JSONMessage.game; break;
       case 'reloadGame': reloadGameState(JSONMessage.gameState); break;
-      case 'startGame' : startGame(); break;
       case 'updateTimer' :
         joinedGame.timer = JSONMessage.timer;
         document.querySelector("#playing_timer").innerText = secondsToText(joinedGame.timer);
