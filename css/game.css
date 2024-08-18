@@ -33,3 +33,7 @@
         transform: translate(-100%, -50%);
     }
 }
+
+#found_opponent p {
+    margin-top: 10vh;
+}

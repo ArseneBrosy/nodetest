@@ -48,19 +48,19 @@ function reloadGameState(gameState) {
   // STATUS
   switch (joinedGame.status) {
     case 0:
-      document.querySelector("#searching").style.display = "block";
+      document.querySelector("#searching").style.display = "flex";
       document.querySelector("#found_opponent").style.display = "none";
       document.querySelector("#playing").style.display = "none";
       break;
     case 1:
       document.querySelector("#searching").style.display = "none";
-      document.querySelector("#found_opponent").style.display = "block";
+      document.querySelector("#found_opponent").style.display = "flex";
       document.querySelector("#playing").style.display = "none";
       break;
     case 2:
       document.querySelector("#searching").style.display = "none";
       document.querySelector("#found_opponent").style.display = "none";
-      document.querySelector("#playing").style.display = "block";
+      document.querySelector("#playing").style.display = "flex";
       break;
   }
 
