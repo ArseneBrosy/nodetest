@@ -2,20 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Nodetest</title>
+    <title>Nodetest | Game</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/game.css">
 </head>
 <body>
-    <p><strong>UUID</strong>&emsp;<span id="uuid"></span></p>
-    <p><strong>GAME ID</strong>&emsp;<span id="game_id"></span></p>
-    <p><strong>GAME STATUS</strong>&emsp;<span id="game_status"></span></p>
-    <div id="searching">
+    <div id="searching" class="page">
         <h1>Searching</h1>
+        <img src="images/game/searching/search-icon.png">
     </div>
-    <div id="found_opponent" style="display: none">
+    <div id="found_opponent" class="page" style="display: none">
         <h1>Found opponent</h1>
         <p id="found_opponent_name"></p>
     </div>
-    <div id="playing" style="display: none">
+    <div id="playing" class="page" style="display: none">
         <h1>Playing</h1>
         <p id="playing_timer"></p>
         <p><strong>ME</strong>&emsp;<span id="playing_me_played"></span></p>
@@ -25,6 +25,6 @@
         <button id="playing_ready_button">Ready</button>
     </div>
 
-    <script src="js/websocket.js"></script>
+    <!--<script src="js/websocket.js"></script>-->
 </body>
 </html>
