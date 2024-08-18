@@ -73,6 +73,10 @@ function reloadGameState(gameState) {
   // PLAYED
   document.querySelector("#playing_me_played").innerText = me().played ? "PLAYED" : "CHOOSING";
   document.querySelector("#playing_opponent_played").innerText = opponent().played ? "PLAYED" : "CHOOSING";
+
+  // MUNITIONS
+  document.querySelector("#playing_me_munitions").innerText = me().munitions;
+  document.querySelector("#playing_opponent_munitions").innerText = opponent().munitions;
 }
 
 function me() {
@@ -90,8 +94,6 @@ function secondsToText(seconds) {
 
 //region WEBSOCKET
 socket.onopen = function() {
-  console.log('Connected to the server');
-  socket.send('Hello, server!');
   joinGame();
 };
 
