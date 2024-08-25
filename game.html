@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/game.css">
 </head>
 <body>
-    <div id="searching" class="page" style="display: flex">
+    <div id="searching" class="page" style="display: none">
         <h1>Searching</h1>
         <img src="images/game/searching/search-icon.png">
     </div>
@@ -15,14 +15,10 @@
         <h1>Found opponent</h1>
         <p id="found_opponent_name"></p>
     </div>
-    <div id="playing" class="page" style="display: none">
-        <h1>Playing</h1>
-        <p id="playing_timer"></p>
-        <p><strong>ME</strong>&emsp;<span id="playing_me_played"></span></p>
-        <p><strong>OPPONENT</strong>&emsp;<span id="playing_opponent_played"></span></p>
-        <p><strong>ME_MUN</strong>&emsp;<span id="playing_me_munitions"></span></p>
-        <p><strong>OPPONENT_MUN</strong>&emsp;<span id="playing_opponent_munitions"></span></p>
-        <button id="playing_ready_button">Ready</button>
+    <div id="playing" class="page" style="display: flex">
+        <div id="playing_opponent_stats"><span id="playing_opponent_munitions">0</span></div>
+        <div id="playing_me_stats"><span id="playing_me_munitions">0</span></div>
+        <p id="playing_timer">2:00</p>
     </div>
 
     <!--<script src="js/websocket.js"></script>-->
