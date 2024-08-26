@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/game.css">
 </head>
 <body>
-    <div id="searching" class="page" style="display: none">
+    <div id="searching" class="page" style="display: flex">
         <h1>Searching</h1>
         <img src="images/game/searching/search-icon.png">
     </div>
@@ -15,7 +15,7 @@
         <h1>Found opponent</h1>
         <p id="found_opponent_name"></p>
     </div>
-    <div id="playing" class="page" style="display: flex">
+    <div id="playing" class="page" style="display: none">
         <div id="playing_opponent_stats"><span id="playing_opponent_munitions">0</span></div>
         <div id="playing_me_stats"><span id="playing_me_munitions">0</span></div>
         <p id="playing_timer">2:00</p>
@@ -23,7 +23,7 @@
         <div id="playing_opponent_card" style="top: -15vh"></div>
     </div>
 
-    <!-- <script src="js/websocket.js"></script> -->
+    <script src="js/websocket.js"></script>
     <script src="js/game-ui.js"></script>
 </body>
 </html>

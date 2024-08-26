@@ -7,6 +7,7 @@ let offsetX = 0;
 let offsetY = 0;
 let moving = false;
 let played = false;
+let lastPlayed = false;
 
 const PLAYED_HEIGHT = document.querySelector("body").clientHeight * .2;
 
@@ -24,11 +25,10 @@ document.addEventListener("mouseup", () => {
   played = upDis < downDis;
   myCard.style.transform = `translate(0px, ${played ? -PLAYED_HEIGHT : 0}px)`;
   myCard.style.transition = "200ms";
-  if (played) {
-    console.log("PLAY");
-  } else {
-    console.log("UPLAYED");
+  if (played !== lastPlayed) {
+    setPlayed(played);
   }
+  lastPlayed = played;
 });
 
 document.addEventListener("mousemove", (e) => {

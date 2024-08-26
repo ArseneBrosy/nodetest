@@ -86,6 +86,20 @@ function opponent() {
 function secondsToText(seconds) {
   return `${parseInt(seconds / 60)}:${(seconds % 60 < 10 ? "0" : "") + seconds % 60}`;
 }
+
+/**
+ * Change the player played state
+ * @param played has he played
+ */
+function setPlayed(played) {
+  socket.send(JSON.stringify({
+    request: 'setPlayed',
+    uuid: localStorage.getItem('clientId'),
+    gameId: joinedGame.id,
+    cardId: 0,
+    played: played
+  }));
+}
 //endregion
 
 //region WEBSOCKET
@@ -136,13 +150,3 @@ if (!localStorage.getItem('clientId')) {
   localStorage.setItem('clientId', uuidv4());
 }
 //endregion
-
-document.querySelector("#playing_ready_button").addEventListener('click', (e) => {
-  socket.send(JSON.stringify({
-    request: 'setPlayed',
-    uuid: localStorage.getItem('clientId'),
-    gameId: joinedGame.id,
-    cardId: 0,
-    played: !me().played
-  }));
-});
