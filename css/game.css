@@ -1,3 +1,7 @@
+* {
+    user-select: none;
+}
+
 .page {
     height: 100%;
     width: 100%;
@@ -51,6 +55,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
+    background-color: white;
 }
 
 #playing_opponent_munitions, #playing_me_stats {
@@ -74,4 +80,21 @@
     font-size: 4vh;
     padding: .7vh;
     border-right: 0;
+}
+
+#playing_me_card, #playing_opponent_card {
+    position: absolute;
+    aspect-ratio: 0.62;
+    height: 25vh;
+    border-radius: 2vh;
+    background-color: black;
+    z-index: 0;
+}
+
+#playing_me_card {
+    bottom: 3vh;
+}
+
+#playing_opponent_card {
+    transition: 200ms;
 }

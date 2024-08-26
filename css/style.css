@@ -3,6 +3,11 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Inter, sans-serif;
+    font-size: 2.7vh;
+}
+
+h1 {
+    font-size: 4vh;
 }
 
 body {

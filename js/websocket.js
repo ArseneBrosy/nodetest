@@ -41,10 +41,6 @@ function reloadGameState(gameState) {
   // update joined game
   joinedGame = gameState;
 
-  // ID
-  document.querySelector("#game_id").innerText = joinedGame.id;
-  document.querySelector("#game_status").innerText = joinedGame.status;
-
   // STATUS
   switch (joinedGame.status) {
     case 0:
@@ -71,8 +67,8 @@ function reloadGameState(gameState) {
   document.querySelector("#playing_timer").innerText = secondsToText(joinedGame.timer);
 
   // PLAYED
-  document.querySelector("#playing_me_played").innerText = me().played ? "PLAYED" : "CHOOSING";
-  document.querySelector("#playing_opponent_played").innerText = opponent().played ? "PLAYED" : "CHOOSING";
+  //document.querySelector("#playing_me_played").innerText = me().played ? "PLAYED" : "CHOOSING";
+  document.querySelector("#playing_opponent_card").style.top = opponent().played ? "7vh" : "-15vh";
 
   // MUNITIONS
   document.querySelector("#playing_me_munitions").innerText = me().munitions;
@@ -139,7 +135,6 @@ socket.onerror = function(error) {
 if (!localStorage.getItem('clientId')) {
   localStorage.setItem('clientId', uuidv4());
 }
-document.querySelector("#uuid").innerText = localStorage.getItem('clientId');
 //endregion
 
 document.querySelector("#playing_ready_button").addEventListener('click', (e) => {
