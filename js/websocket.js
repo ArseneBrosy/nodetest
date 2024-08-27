@@ -67,7 +67,7 @@ function reloadGameState(gameState) {
   document.querySelector("#playing_timer").innerText = secondsToText(joinedGame.timer);
 
   // PLAYED
-  //document.querySelector("#playing_me_played").innerText = me().played ? "PLAYED" : "CHOOSING";
+  document.querySelector("#playing_me_card").style.transform = `translate(0px, ${me().played ? -PLAYED_HEIGHT : 0}px)`;
   document.querySelector("#playing_opponent_card").style.top = opponent().played ? "7vh" : "-15vh";
 
   // MUNITIONS
