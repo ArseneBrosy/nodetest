@@ -10,8 +10,8 @@ let movingCard = false;
 let movingDeck = false;
 let stillMovingDeck = false;
 let played = false;
-let lastOffset = 0;
 let mouseX = 0;
+let lastMouseX = 0;
 let deckVelocity = 0;
 let deckPosition = 0;
 
@@ -25,9 +25,8 @@ function startMovingCard(x, y) {
 }
 
 function startMovingDeck(x) {
-  mouseStartX = x;
   mouseX = x;
-  lastOffset = 0;
+  lastMouseX = x;
   movingDeck = true;
   stillMovingDeck = true;
 }
@@ -90,9 +89,8 @@ document.addEventListener("touchmove", (e) => {
 
 setInterval(() => {
   if (movingDeck) {
-    offsetX = mouseX - mouseStartX;
-    deckVelocity = offsetX - lastOffset;
-    lastOffset = offsetX;
+    deckVelocity = mouseX - lastMouseX;
+    lastMouseX = mouseX;
   } else if (Math.abs(deckVelocity) > 0.1) {
     deckVelocity /= DECK_VELOCITY_FRICTION;
   } else if (stillMovingDeck) {
@@ -102,14 +100,22 @@ setInterval(() => {
   if (stillMovingDeck) {
     deckPosition += deckVelocity;
 
+    // MOVE DECK
     for (let i = 0; i < deck.childElementCount; i++) {
       const deckCard = deck.children[i];
-      deckCard.style.transform = `translate(calc(${i*110}% + ${deckPosition}px), 0)`;
+      const boundingRect = deckCard.getBoundingClientRect();
+      const xToMiddle = boundingRect.x - window.innerWidth / 2 + boundingRect.width / 2;
+      const yPos = (xToMiddle ** 2) * 0.001;
+      deckCard.style.transform = `translate(calc(${i*110}% + ${deckPosition}px), ${yPos}px)`;
     }
   }
 }, 10);
 
+// INIT DECK
 for (let i = 0; i < deck.childElementCount; i++) {
   const deckCard = deck.children[i];
-  deckCard.style.transform = `translate(${i*110}%, 0)`;
+  const boundingRect = deckCard.getBoundingClientRect();
+  const xToMiddle = boundingRect.x - window.innerWidth / 2 + boundingRect.width / 2;
+  const yPos = (xToMiddle ** 2) * 0.001;
+  deckCard.style.transform = `translate(calc(${i*110}%), ${yPos}px)`;
 }
