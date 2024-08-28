@@ -8,11 +8,13 @@ let offsetX = 0;
 let offsetY = 0;
 let movingCard = false;
 let movingDeck = false;
+let stillMovingDeck = false;
 let played = false;
 let lastOffset = 0;
 let mouseX = 0;
 let deckVelocity = 0;
 let deckPosition = 0;
+let lastDeckPosition = 0;
 
 const PLAYED_HEIGHT = document.querySelector("body").clientHeight * .2;
 
@@ -25,7 +27,9 @@ function startMovingCard(x, y) {
 
 function startMovingDeck(x) {
   mouseStartX = x;
+  mouseX = x;
   movingDeck = true;
+  stillMovingDeck = true;
 }
 
 function clickEnd() {
@@ -86,14 +90,30 @@ document.addEventListener("touchmove", (e) => {
 
 setInterval(() => {
   if (movingDeck) {
-    offsetX = mouseX - mouseStartX;
+    offsetX = mouseX - mouseStartX + lastDeckPosition;
     deckVelocity = offsetX - lastOffset;
     lastOffset = offsetX;
   } else if (Math.abs(deckVelocity) > 0.1) {
     deckVelocity /= DECK_VELOCITY_FRICTION;
-  } else {
+  } else if (stillMovingDeck) {
     deckVelocity = 0;
+    stillMovingDeck = false;
   }
-  deckPosition += deckVelocity;
-  deck.style.backgroundPositionX = deckPosition + "px";
+  if (stillMovingDeck) {
+    deckPosition += deckVelocity;
+
+    for (let i = 0; i < deck.childElementCount; i++) {
+      const deckCard = deck.children[i];
+      deckCard.style.transform = `translate(calc(${i*110}% + ${deckPosition}px), 0)`;
+    }
+
+  }
+  if (stillMovingDeck !== movingDeck) {
+    lastDeckPosition = deckPosition;
+  }
 }, 10);
+
+for (let i = 0; i < deck.childElementCount; i++) {
+  const deckCard = deck.children[i];
+  deckCard.style.transform = `translate(${i*110}%, 0)`;
+}

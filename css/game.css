@@ -102,7 +102,14 @@
     bottom: 0;
     z-index: 99;
     height: 25vh;
-    background: url("https://as1.ftcdn.net/v2/jpg/05/06/72/54/1000_F_506725496_kvJPVTdPAdmjHO6b9TOkHzm3Zqn5cILX.jpg") repeat;
-    background-size: 30% 100%;
-    background-position-x: 10px;
+}
+
+.deck-card {
+    aspect-ratio: 0.62;
+    height: 20vh;
+    border-radius: 2vh;
+    background-color: blue;
+    position: absolute;
+    top: 2vh;
+    left: 0;
 }
