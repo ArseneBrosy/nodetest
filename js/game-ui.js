@@ -1,6 +1,8 @@
 const myCard = document.querySelector("#playing_me_card");
 const deck = document.querySelector("#playing_deck");
 const DECK_VELOCITY_FRICTION = 1.1;
+const DECK_CURVATURE = 0.05;
+const DECK_CURVATURE_HEIGHT = 0.0006;
 
 let mouseStartX = 0;
 let mouseStartY = 0;
@@ -57,6 +59,18 @@ function clickDrag(x, y) {
   }
 }
 
+function placeDeck(pos) {
+  for (let i = 0; i < deck.childElementCount; i++) {
+    const deckCard = deck.children[i];
+    deckCard.style.transform = `translate(calc(${i*110}% + ${pos}px), 0)`;
+    const boundingRect = deckCard.getBoundingClientRect();
+    const xToMiddle = boundingRect.x - window.innerWidth / 2 + boundingRect.width / 2;
+    const yPos = (xToMiddle ** 2) * DECK_CURVATURE_HEIGHT;
+    const rot = xToMiddle * DECK_CURVATURE;
+    deckCard.style.transform = `translate(calc(${i*110}% + ${pos}px), ${yPos}px) rotate(${rot}deg)`;
+  }
+}
+
 myCard.addEventListener("mousedown", (e) => {
   startMovingCard(e.clientX, e.clientY);
 });
@@ -98,24 +112,18 @@ setInterval(() => {
     stillMovingDeck = false;
   }
   if (stillMovingDeck) {
-    deckPosition += deckVelocity;
+    const leftBounding = deck.children[0].getBoundingClientRect();
+    const rightBounding = deck.children[deck.childElementCount - 1].getBoundingClientRect();
+    const deckLeftLimit = leftBounding.x - window.innerWidth / 2 + leftBounding.width / 2;
+    const deckRightLimit = rightBounding.x - window.innerWidth / 2 + rightBounding.width / 2;
+    deckPosition += Math.max(Math.min(deckVelocity, -deckLeftLimit), -deckRightLimit);
 
     // MOVE DECK
-    for (let i = 0; i < deck.childElementCount; i++) {
-      const deckCard = deck.children[i];
-      const boundingRect = deckCard.getBoundingClientRect();
-      const xToMiddle = boundingRect.x - window.innerWidth / 2 + boundingRect.width / 2;
-      const yPos = (xToMiddle ** 2) * 0.001;
-      deckCard.style.transform = `translate(calc(${i*110}% + ${deckPosition}px), ${yPos}px)`;
-    }
+    placeDeck(deckPosition);
   }
 }, 10);
 
 // INIT DECK
-for (let i = 0; i < deck.childElementCount; i++) {
-  const deckCard = deck.children[i];
-  const boundingRect = deckCard.getBoundingClientRect();
-  const xToMiddle = boundingRect.x - window.innerWidth / 2 + boundingRect.width / 2;
-  const yPos = (xToMiddle ** 2) * 0.001;
-  deckCard.style.transform = `translate(calc(${i*110}%), ${yPos}px)`;
-}
+const leftBounding = deck.children[0].getBoundingClientRect();
+deckPosition = -leftBounding.x + window.innerWidth / 2 - leftBounding.width / 2;
+placeDeck(deckPosition);
