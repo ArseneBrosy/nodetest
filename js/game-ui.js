@@ -1,8 +1,10 @@
 const myCard = document.querySelector("#playing_me_card");
 const deck = document.querySelector("#playing_deck");
+const cardName = document.querySelector("#playing_card_name");
 const DECK_VELOCITY_FRICTION = 1.1;
 const DECK_CURVATURE = 0.05;
 const DECK_CURVATURE_HEIGHT = 0.0006;
+const PLAYED_HEIGHT = document.querySelector("body").clientHeight * .25;
 
 let mouseStartX = 0;
 let mouseStartY = 0;
@@ -16,8 +18,7 @@ let mouseX = 0;
 let lastMouseX = 0;
 let deckVelocity = 0;
 let deckPosition = 0;
-
-const PLAYED_HEIGHT = document.querySelector("body").clientHeight * .2;
+let choosedCard = 0;
 
 function startMovingCard(x, y) {
   mouseStartX = x;
@@ -27,6 +28,9 @@ function startMovingCard(x, y) {
 }
 
 function startMovingDeck(x) {
+  if (played) {
+    return;
+  }
   mouseX = x;
   lastMouseX = x;
   movingDeck = true;
@@ -41,6 +45,9 @@ function clickEnd() {
     played = upDis < downDis;
     myCard.style.transform = `translate(0px, ${played ? -PLAYED_HEIGHT : 0}px)`;
     myCard.style.transition = "200ms";
+    setTimeout(() => {
+      cardName.style.display = played ? "none" : "block";
+    }, 200);
     setPlayed(played);
   }
   if (movingDeck) {
@@ -60,6 +67,7 @@ function clickDrag(x, y) {
 }
 
 function placeDeck(pos) {
+  let lastXtoMiddle = Infinity;
   for (let i = 0; i < deck.childElementCount; i++) {
     const deckCard = deck.children[i];
     deckCard.style.transform = `translate(calc(${i*110}% + ${pos}px), 0)`;
@@ -68,6 +76,13 @@ function placeDeck(pos) {
     const yPos = (xToMiddle ** 2) * DECK_CURVATURE_HEIGHT;
     const rot = xToMiddle * DECK_CURVATURE;
     deckCard.style.transform = `translate(calc(${i*110}% + ${pos}px), ${yPos}px) rotate(${rot}deg)`;
+
+    // set choosedCard
+    if (Math.abs(xToMiddle) < lastXtoMiddle) {
+      choosedCard = i;
+      cardName.innerText = choosedCard;
+    }
+    lastXtoMiddle = Math.abs(xToMiddle);
   }
 }
 

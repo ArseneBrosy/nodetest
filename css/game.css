@@ -83,16 +83,18 @@
     aspect-ratio: 0.62;
     height: 25vh;
     border-radius: 2vh;
-    background-color: black;
     z-index: 100;
 }
 
 #playing_me_card {
     bottom: 3vh;
+    border: 1vh solid black;
+    background-color: white;
 }
 
 #playing_opponent_card {
     transition: 200ms;
+    background-color: black;
 }
 
 #playing_deck {
@@ -108,8 +110,17 @@
     aspect-ratio: 0.62;
     height: 20vh;
     border-radius: 2vh;
-    background-color: blue;
+    border: .7vh solid black;
+    background-color: white;
     position: absolute;
     top: 2vh;
     left: 0;
+}
+
+#playing_card_name {
+    position: absolute;
+    bottom: 40vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 4vh;
 }
