@@ -16,11 +16,14 @@ function play(game) {
   for (let player of game.players) {
     player.played = false;
   }
+
   // sort players by priority
-  game.players.sort((a, b) => {return CARDS[a.choosedCard].priority - CARDS[b.choosedCard].priority});
+  //game.players.sort((a, b) => {return CARDS[a.choosedCard].priority - CARDS[b.choosedCard].priority});
+
   // play
   for (let player of game.players) {
-    CARDS[player.choosedCard].play(player);
+    //CARDS[player.choosedCard].play(player);
+    console.log(player.choosedCard);
   }
 }
 

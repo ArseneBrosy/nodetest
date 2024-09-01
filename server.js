@@ -231,4 +231,21 @@ wss.on('connection', function connection(ws) {
 });
 //endregion
 
+setInterval(() => {
+  for (let game of ongoingGames) {
+    console.log(`=============[GAME ${game.id}]============`);
+    let gameGoing = false;
+    for (let player of game.players) {
+      console.log(player.ws.readyState);
+      if (player.ws.readyState === WebSocket.OPEN) {
+        gameGoing = true;
+      }
+    }
+    if (!gameGoing) {
+      ongoingGames.splice(ongoingGames.findIndex(item => item.id === game.id), 1)
+    }
+  }
+  console.log("=====================================")
+}, 1000);
+
 console.log('WebSocket server is listening on ws://localhost:8080');
