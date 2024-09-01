@@ -104,6 +104,7 @@
     bottom: 0;
     z-index: 99;
     height: 25vh;
+    overflow: hidden;
 }
 
 .deck-card {

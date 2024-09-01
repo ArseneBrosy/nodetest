@@ -5,6 +5,7 @@ const DECK_VELOCITY_FRICTION = 1.1;
 const DECK_CURVATURE = 0.05;
 const DECK_CURVATURE_HEIGHT = 0.0006;
 const PLAYED_HEIGHT = document.querySelector("body").clientHeight * .25;
+const lang = "fr_fr";
 
 let mouseStartX = 0;
 let mouseStartY = 0;
@@ -19,6 +20,21 @@ let lastMouseX = 0;
 let deckVelocity = 0;
 let deckPosition = 0;
 let choosedCard = 0;
+
+let myDeck = [
+  {
+    id: 0,
+    fr_fr: "Munition"
+  },
+  {
+    id: 1,
+    fr_fr: "Bouclier"
+  },
+  {
+    id: 2,
+    fr_fr: "Pistolet"
+  },
+]
 
 function startMovingCard(x, y) {
   mouseStartX = x;
@@ -66,6 +82,15 @@ function clickDrag(x, y) {
   }
 }
 
+function initDeck() {
+  for (let i = 0; i < myDeck.length; i++) {
+    deck.innerHTML += '<div class="deck-card"></div>';
+  }
+  const leftBounding = deck.children[0].getBoundingClientRect();
+  deckPosition = -leftBounding.x + window.innerWidth / 2 - leftBounding.width / 2;
+  placeDeck(deckPosition);
+}
+
 function placeDeck(pos) {
   let lastXtoMiddle = Infinity;
   for (let i = 0; i < deck.childElementCount; i++) {
@@ -80,7 +105,7 @@ function placeDeck(pos) {
     // set choosedCard
     if (Math.abs(xToMiddle) < lastXtoMiddle) {
       choosedCard = i;
-      cardName.innerText = choosedCard;
+      cardName.innerText = myDeck[i][lang];
     }
     lastXtoMiddle = Math.abs(xToMiddle);
   }
@@ -139,6 +164,4 @@ setInterval(() => {
 }, 10);
 
 // INIT DECK
-const leftBounding = deck.children[0].getBoundingClientRect();
-deckPosition = -leftBounding.x + window.innerWidth / 2 - leftBounding.width / 2;
-placeDeck(deckPosition);
+initDeck();
