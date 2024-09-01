@@ -68,7 +68,9 @@ function reloadGameState(gameState) {
 
   // PLAYED
   document.querySelector("#playing_me_card").style.transform = `translate(0px, ${me().played ? -PLAYED_HEIGHT : 0}px)`;
-  document.querySelector("#playing_opponent_card").style.top = opponent().played ? "7vh" : "-15vh";
+  played = opponent().played;
+  document.querySelector("#playing_opponent_card").style.top = played ? "7vh" : "-15vh";
+  cardName.style.display = played ? "none" : "block";
 
   // MUNITIONS
   document.querySelector("#playing_me_munitions").innerText = me().munitions;
@@ -90,13 +92,14 @@ function secondsToText(seconds) {
 /**
  * Change the player played state
  * @param played has he played
+ * @param id card played by the player
  */
-function setPlayed(played) {
+function setPlayed(played, id) {
   socket.send(JSON.stringify({
     request: 'setPlayed',
     uuid: localStorage.getItem('clientId'),
     gameId: joinedGame.id,
-    cardId: 0,
+    cardId: id,
     played: played
   }));
 }

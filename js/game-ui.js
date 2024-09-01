@@ -64,7 +64,7 @@ function clickEnd() {
     setTimeout(() => {
       cardName.style.display = played ? "none" : "block";
     }, 200);
-    setPlayed(played);
+    setPlayed(played, choosedCard);
   }
   if (movingDeck) {
     movingDeck = false;
