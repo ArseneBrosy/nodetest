@@ -2,8 +2,8 @@ const myCard = document.querySelector("#playing_me_card");
 const deck = document.querySelector("#playing_deck");
 const cardName = document.querySelector("#playing_card_name");
 const DECK_VELOCITY_FRICTION = 1.1;
-const DECK_CURVATURE = 0.05;
-const DECK_CURVATURE_HEIGHT = 0.0006;
+const DECK_CURVATURE = 25;
+const DECK_CURVATURE_HEIGHT = 120;
 const PLAYED_HEIGHT = document.querySelector("body").clientHeight * .25;
 const lang = "fr_fr";
 
@@ -20,6 +20,7 @@ let lastMouseX = 0;
 let deckVelocity = 0;
 let deckPosition = 0;
 let choosedCard = 0;
+let deckInited = false;
 
 let myDeck = [
   {
@@ -83,6 +84,10 @@ function clickDrag(x, y) {
 }
 
 function initDeck() {
+  if (deckInited) {
+    return;
+  }
+  deckInited = true;
   for (let i = 0; i < myDeck.length; i++) {
     deck.innerHTML += '<div class="deck-card"></div>';
   }
@@ -97,7 +102,7 @@ function placeDeck(pos) {
     const deckCard = deck.children[i];
     deckCard.style.transform = `translate(calc(${i*110}% + ${pos}px), 0)`;
     const boundingRect = deckCard.getBoundingClientRect();
-    const xToMiddle = boundingRect.x - window.innerWidth / 2 + boundingRect.width / 2;
+    const xToMiddle = (boundingRect.x - window.innerWidth / 2 + boundingRect.width / 2) / window.innerWidth;
     const yPos = (xToMiddle ** 2) * DECK_CURVATURE_HEIGHT;
     const rot = xToMiddle * DECK_CURVATURE;
     deckCard.style.transform = `translate(calc(${i*110}% + ${pos}px), ${yPos}px) rotate(${rot}deg)`;
@@ -162,6 +167,3 @@ setInterval(() => {
     placeDeck(deckPosition);
   }
 }, 10);
-
-// INIT DECK
-initDeck();

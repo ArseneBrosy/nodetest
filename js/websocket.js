@@ -57,6 +57,8 @@ function reloadGameState(gameState) {
       document.querySelector("#searching").style.display = "none";
       document.querySelector("#found_opponent").style.display = "none";
       document.querySelector("#playing").style.display = "flex";
+      // INIT DECK
+      initDeck();
       break;
   }
 
@@ -67,9 +69,9 @@ function reloadGameState(gameState) {
   document.querySelector("#playing_timer").innerText = secondsToText(joinedGame.timer);
 
   // PLAYED
-  document.querySelector("#playing_me_card").style.transform = `translate(0px, ${me().played ? -PLAYED_HEIGHT : 0}px)`;
-  played = opponent().played;
-  document.querySelector("#playing_opponent_card").style.top = played ? "7vh" : "-15vh";
+  played = me().played;
+  document.querySelector("#playing_me_card").style.transform = `translate(0px, ${played ? -PLAYED_HEIGHT : 0}px)`;
+  document.querySelector("#playing_opponent_card").style.top = opponent().played ? "7vh" : "-15vh";
   cardName.style.display = played ? "none" : "block";
 
   // MUNITIONS
