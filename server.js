@@ -36,7 +36,8 @@ function newPlayer(ws, uuid) {
     uuid: uuid,
     choosedCard: null,
     played: false,
-    munitions: 0
+    munitions: 0,
+    protectionLevel: 0
   }
 }
 
@@ -116,7 +117,6 @@ function joinGame(ws, uuid) {
  * @param gameId game id of the game the player is in
  */
 function setPlayed(ws, uuid, gameId, played, cardId) {
-  try {
     const game = ongoingGames.filter(e => e.id === gameId)[0];
     const player = game.players.filter(e => e.uuid === uuid)[0]
     player.played = played;
@@ -134,9 +134,6 @@ function setPlayed(ws, uuid, gameId, played, cardId) {
       }
     }
     askToReload(game);
-  } catch (e) {
-    console.error(`Undefined player tried to set his played state: ${e}`);
-  }
 }
 
 /**
@@ -233,10 +230,8 @@ wss.on('connection', function connection(ws) {
 
 setInterval(() => {
   for (let game of ongoingGames) {
-    console.log(`=============[GAME ${game.id}]============`);
     let gameGoing = false;
     for (let player of game.players) {
-      console.log(player.ws.readyState);
       if (player.ws.readyState === WebSocket.OPEN) {
         gameGoing = true;
       }
@@ -245,7 +240,6 @@ setInterval(() => {
       ongoingGames.splice(ongoingGames.findIndex(item => item.id === game.id), 1)
     }
   }
-  console.log("=====================================")
 }, 1000);
 
 console.log('WebSocket server is listening on ws://localhost:8080');
